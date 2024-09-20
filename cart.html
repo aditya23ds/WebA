@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - Shopee</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .cart-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #0077c0;
+        }
+        .cart-item {
+            padding: 10px;
+            border-bottom: 1px solid #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-item h3 {
+            margin: 0;
+        }
+        .cart-item button {
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+        .cart-item .quantity-controls {
+            display: flex;
+            align-items: center;
+        }
+        .cart-item .quantity-controls button {
+            background-color: #0077c0;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        .cart-item .quantity-controls input {
+            width: 40px;
+            text-align: center;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <section class="cart-container">
+        <h2>Your Cart</h2>
+        <div id="cart-items"></div>
+        <p id="empty-cart" style="display:none;">Your cart is empty.</p>
+        <h3>Total: $<span id="total-price">0.00</span></h3>
+    </section>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartContainer = document.getElementById('cart-items');
+        const totalPriceElement = document.getElementById('total-price');
+        const emptyCartMessage = document.getElementById('empty-cart');
+
+        function renderCart() {
+            cartContainer.innerHTML = '';
+            let totalPrice = 0;
+
+            if (cart.length === 0) {
+                emptyCartMessage.style.display = 'block';
+                totalPriceElement.textContent = '0.00';
+            } else {
+                emptyCartMessage.style.display = 'none';
+
+                cart.forEach((item, index) => {
+                    const cartItemDiv = document.createElement('div');
+                    cartItemDiv.classList.add('cart-item');
+                    cartItemDiv.innerHTML = `
+                        <h3>${item.name}</h3>
+                        <div class="quantity-controls">
+                            <button onclick="changeQuantity(${index}, -1)">-</button>
+                            <input type="text" value="${item.quantity}" readonly>
+                            <button onclick="changeQuantity(${index}, 1)">+</button>
+                        </div>
+                        <p>$${(item.price * item.quantity).toFixed(2)}</p>
+                        <button onclick="removeItem(${index})">X</button>
+                    `;
+
+                    cartContainer.appendChild(cartItemDiv);
+                    totalPrice += item.price * item.quantity;
+                });
+
+                totalPriceElement.textContent = totalPrice.toFixed(2);
+            }
+
+            // Save the updated cart to local storage
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function changeQuantity(index, delta) {
+            if (cart[index].quantity + delta > 0) {
+                cart[index].quantity += delta;
+                renderCart();
+            }
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            renderCart();
+        }
+
+        // Initial rendering of the cart
+        renderCart();
+    </script>
+</body>
+</html>
