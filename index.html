@@ -225,27 +225,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     gtag('js', new Date());
 
     gtag('config', 'GTM-NG4DW3PL');
-    </script>
-        // JavaScript function to manage cart and store items in localStorage
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    <script>
+    // JavaScript function to manage cart and store items in localStorage
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-        function toggleCart(productName, productPrice) {
-            const product = { name: productName, price: productPrice, quantity: 1 };
+    function toggleCart(productName, productPrice) {
+        const product = { name: productName, price: productPrice, quantity: 1 };
 
-            // Check if product is already in cart
-            const existingProduct = cart.find(item => item.name === productName);
+        // Check if product is already in cart
+        const existingProduct = cart.find(item => item.name === productName);
 
-            if (existingProduct) {
-                alert(`${productName} is already in your cart!`);
-            } else {
-                cart.push(product);
-                alert(`${productName} has been added to your cart.`);
-            }
-
-            // Save the updated cart to local storage
-            localStorage.setItem('cart', JSON.stringify(cart));
+        if (existingProduct) {
+            alert(`${productName} is already in your cart!`);
+        } else {
+            cart.push(product);
+            alert(`${productName} has been added to your cart.`);
         }
-    </script>
+
+        // Save the updated cart to local storage
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+</script>
+
     <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=Hmio2HpxUvcE8rSx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </body>
 
